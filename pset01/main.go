@@ -251,10 +251,46 @@ func GenerateKey() (SecretKey, PublicKey, error) {
 	var sec SecretKey
 	var pub PublicKey
 
-	// Your code here
-	// ===
+	// generate secret key ZeroPre
 
-	// ===
+	for i := 0; i < len(sec.ZeroPre); i++ {
+
+	
+		for j := 0; j < len(sec.ZeroPre[0]); j++ {
+			randbyte := make([]byte, 1)
+			_, err := rand.Read(randbyte)
+			if err != nil {
+				fmt.Println("error")
+			}
+			sec.ZeroPre[i][j] = randbyte[0] 
+		}
+
+		// hash each block 
+
+		hash := sec.ZeroPre[i].Hash()
+		pub.ZeroHash[i] = hash
+		
+	}
+
+
+	// Generate secretkey for OnePre
+
+	for i := 0; i < len(sec.OnePre); i++ {
+		for j := 0; j < len(sec.OnePre[0]); j++ {
+			randbyte := make([]byte, 1)
+			_, err := rand.Read(randbyte)
+			if err != nil {
+				fmt.Println("error")
+			}
+			sec.OnePre[i][j] = randbyte[0]	
+		}
+
+		hash := sec.OnePre[i].Hash()
+		pub.OneHash[i] = hash
+	}
+
+
+
 	return sec, pub, nil
 }
 
