@@ -1,56 +1,81 @@
 package main
 
+
 import (
 	"fmt"
 	"crypto/rand"
-//	"bytes"
-	"log"
+	"crypto/sha256"
 )
 
+type Block [32]byte
 
-func generateRandomBytes(n int) ([]byte, error) {
-	b := make([]byte, n)
-	_, err := rand.Read(b)
-	if err != nil {
-		return nil, err
-	}
-
-	return b, nil
+type SecretKey struct {
+	ZeroPre [256]Block
+	OnePre  [256]Block
 }
 
-type Block [1]byte
-
-
-type PubKey struct{
-	ZeroPre [10]Block
+type PublicKey struct {
+	ZeroHash [256]Block
+	OneHash  [256]Block
 }
+
 
 func main() {
 
-	for {
+	// declaring your secret and public keys
 
-		rb, err := generateRandomBytes(1)
-		if err != nil {
-			panic(err)
-		}
-		fmt.Printf("%b\n", rb)
-	}
-	var key PubKey
-//	fmt.Println(key,"\n")
+	var sec SecretKey
+	var pub PublicKey
 
-	for i := 0; i < len(key.ZeroPre); i++ {
+	// generate secret key ZeroPre
+
+	for i := 0; i < len(sec.ZeroPre); i++ {
+
 	
-		randbyte, err := generateRandomBytes(2)
-		if err != nil {
-			log.Fatal(err)
+		for j := 0; j < len(sec.ZeroPre[0]); j++ {
+			randbyte := make([]byte, 1)
+			_, err := rand.Read(randbyte)
+			if err != nil {
+				fmt.Println("error")
+			}
+			sec.ZeroPre[i][j] = randbyte[0] 
 		}
-		
-		key.ZeroPre[i] = Block(randbyte)
 
-		// fmt.Printf("%b", randbyte)
+		// hash each block 
+
+		hash := sec.ZeroPre[i].Hash()
+		pub.ZeroHash[i] = hash
 		
 	}
 
-//	fmt.Printf("%b", key.ZeroPre)
 
+	// Generate secretkey for OnePre
+
+	for i := 0; i < len(sec.OnePre); i++ {
+		for j := 0; j < len(sec.OnePre[0]); j++ {
+			randbyte := make([]byte, 1)
+			_, err := rand.Read(randbyte)
+			if err != nil {
+				fmt.Println("error")
+			}
+			sec.OnePre[i][j] = randbyte[0]	
+		}
+
+		hash := sec.OnePre[i].Hash()
+		pub.OneHash[i] = hash
+	}
+
+
+	fmt.Printf("%08b\n", sec.ZeroPre)
+	fmt.Printf("%08b\n", sec.OnePre)
+	fmt.Printf("%x\n", pub.ZeroHash)
+	fmt.Printf("%x\n", pub.OneHash)
+
+
+	
+	
+}
+
+func (self Block) Hash() Block {
+	return sha256.Sum256(self[:])
 }
