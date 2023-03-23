@@ -51,3 +51,26 @@ the leading zeroes, use printf("%08b", <thing to be printed>)
 parts with two brackets key.Zeropre[row][column]
 
 3. you may need two loops inside eachother
+
+
+---
+
+3-23-23
+
+### What I've been able to acomplish so far ###
+
+Since i started working on the project fully after learning the basics of go
+four days ago, I have made some good progress. Fisrtly, I was able to complete
+the first of the three required functions, being GenerateKey() Sign() Verify().
+I have left the Generate key in a file called GenerateKey, if you want to see 
+it. 
+
+*How did you create GenerateKey?*
+
+Firstly, I used the crypto/rand package to generate bytes of data and write it to the
+ZeroPre, and OnePre of the Secret key i call sec. nested for loops go over each element
+in the nested 2d array. After this is done, I look simply at the blocks (256) each row
+and hash them which is stored in the corrosponding public hash. I'm not the best programmer
+but I was happy with my implementation. Next steps will be to make a signature function that
+takes the desired message, hashes it, and then looks at the individual 256 bits of the binary
+representation of the hash, and "reveals" the preimmages.
