@@ -11,3 +11,8 @@ func main() {
 	fmt.Println(x & y)
 
 }
+
+
+func kBitZero(num,  int ) {
+	
+}

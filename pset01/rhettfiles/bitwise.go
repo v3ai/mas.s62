@@ -17,11 +17,17 @@ func main() {
 	h.Write([]byte(message))
 	hash := h.Sum(nil)
 
-	fmt.Println(hash[0])
-	fmt.Printf("%08b\n", hash[0])
+	fmt.Println(hash)
+
+
+	for j := 0; j < 32; j++ {
+		for s := 7; s >= 0; s--{
+		fmt.Println(hash[j] & (1 << s) != 0)	
+		}	
+	}
+
+	fmt.Printf("%08b", hash)
+
 	
 
-	fmt.Println(hash[0] & (1 << 3) == 1)
-
-	fmt.Println(1 << 1)
 }
