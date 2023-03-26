@@ -298,6 +298,24 @@ func GenerateKey() (SecretKey, PublicKey, error) {
 func Sign(msg Message, sec SecretKey) Signature {
 	var sig Signature
 
+	
+// go through the individual bytes of the hash of the message
+	currentBlock := 0
+	for j := 0; j < 32; j++ {
+// go through each individual bit of each byte from left to right
+		for s := 7; s >= 0; s--{
+			if (m[j] & (1 << s) != 0) {
+				sig[currentBlock] = SecretKey.OnePre[currentBlock]
+			} else {
+				sig[currentBlock] = SecretKey.ZeroPre[currentBlock]
+			}	
+
+			currentBlock++
+		}	
+	}
+
+	return sig
+
 	// Your code here
 	// ===
 
