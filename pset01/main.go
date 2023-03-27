@@ -307,10 +307,10 @@ func Sign(msg Message, sec SecretKey) Signature {
 	for j := 0; j < 32; j++ {
 // go through each individual bit of each byte from left to right
 		for s := 7; s >= 0; s--{
-			if (m[j] & (1 << s) != 0) {
-				sig[currentBlock] = SecretKey.OnePre[currentBlock]
+			if (msg[j] & (1 << s) != 0) {
+				sig.Preimage[currentBlock] = sec.OnePre[currentBlock]
 			} else {
-				sig[currentBlock] = SecretKey.ZeroPre[currentBlock]
+				sig.Preimage[currentBlock] = sec.ZeroPre[currentBlock]
 			}	
 
 			currentBlock++
@@ -325,16 +325,16 @@ func Sign(msg Message, sec SecretKey) Signature {
 // describing the validity of the signature.
 func Verify(msg Message, pub PublicKey, sig Signature) bool {
 // this will be what should be the hash of your original message
-	var gsig Block
+	var gsig Message
 	
 	for i := 0; i < 256; i++ {
 
 	
-		if sig[i].Hash() == pub[i].ZeroHash {
+		if sig.Preimage[i].Hash() == pub.ZeroHash[i] {
 			
-		} else if sig[i].Hash() == pub[i].OneHash {
-
-			gsig[math.Floor(i/8)] | 1 << (7-(i%8)) = gsig[math.Floor(i/8)]
+		} else if sig.Preimage[i].Hash() == pub.OneHash[i] {
+			
+			gsig[int64(math.Floor(float64(i)/8.0))] | 1 << (7-(i%8)) = gsig[int64(math.Floor(float64(i/8)))]
 
 		
 			
