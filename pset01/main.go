@@ -334,20 +334,18 @@ func Verify(msg Message, pub PublicKey, sig Signature) bool {
 			
 		} else if sig[i].Hash() == pub[i].OneHash {
 
-			gsig[math.Floor(i/8)]
-
+			gsig[math.Floor(i/8)] | 1 << (7-(i%8)) = gsig[math.Floor(i/8)]
 
 		
 			
-		} else {
-			fmt.Println("Error, input hash does not match zero or one hash")
-			panic(err)
-		}
+		} 
 
+	}
 
-
-
-		
+	if msg == gsig {
+		return true 
+	} else {
+		return false
 	}
 
 	
