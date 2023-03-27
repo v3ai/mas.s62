@@ -334,7 +334,7 @@ func Verify(msg Message, pub PublicKey, sig Signature) bool {
 			
 		} else if sig.Preimage[i].Hash() == pub.OneHash[i] {
 			
-			gsig[int64(math.Floor(float64(i)/8.0))] | 1 << (7-(i%8)) = gsig[int64(math.Floor(float64(i/8)))]
+			gsig[int64(math.Floor(float64(i/8)))] = gsig[int64(math.Floor(float64(i)/8.0))] | (1 << (7-(i%8)))
 
 		
 			
