@@ -25,6 +25,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"crypto/rand"
+	"math"
 )
 
 func main() {
@@ -138,6 +139,8 @@ func HexToPubkey(s string) (PublicKey, error) {
 
 // A message to be signed is just a block.
 type Message Block
+// this will be a 256 bit number generated from the placement of the 0 and 1 blocks of 
+// the signature
 
 // --- Methods on the Block type
 
@@ -316,21 +319,40 @@ func Sign(msg Message, sec SecretKey) Signature {
 
 	return sig
 
-	// Your code here
-	// ===
-
-	// ===
-	return sig
 }
 
 // Verify takes a message, public key and signature, and returns a boolean
 // describing the validity of the signature.
 func Verify(msg Message, pub PublicKey, sig Signature) bool {
+// this will be what should be the hash of your original message
+	var gsig Block
+	
+	for i := 0; i < 256; i++ {
+
+	
+		if sig[i].Hash() == pub[i].ZeroHash {
+			
+		} else if sig[i].Hash() == pub[i].OneHash {
+
+			gsig[math.Floor(i/8)]
+
+
+		
+			
+		} else {
+			fmt.Println("Error, input hash does not match zero or one hash")
+			panic(err)
+		}
+
+
+
+
+		
+	}
+
+	
 
 	// Your code here
 	// ===
 
-	// ===
-
-	return true
 }

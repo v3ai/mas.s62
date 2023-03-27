@@ -74,3 +74,83 @@ and hash them which is stored in the corrosponding public hash. I'm not the best
 but I was happy with my implementation. Next steps will be to make a signature function that
 takes the desired message, hashes it, and then looks at the individual 256 bits of the binary
 representation of the hash, and "reveals" the preimmages.
+
+
+
+### 3-26-23 Re-Explaining Lamport signatures to myself ###
+
+I dont know about you, but when I'm learning a specific topic, I like to re-explain it to 
+myself to 
+
+1. See if I know what I'm talking about
+and
+2. Get a better sense of direction for what I am going to need to do next
+
+this process makes everything much clearer, and provides a refresh of the mind.
+that is what I will be doing below
+
+Lamport signatures
+
+first, Generate 256 pairs of 32 byte numbers, arrange in two rows
+
+row 0 [][][][][][] ... 256
+
+row 1 [][][][][][] ... 256
+
+each [] represents 32 bytes or 256 bits of random data, we will call it a block.
+
+after we have this random data we will hash it and arrange two more rows like so
+
+
+row 0   [][][][][][] ... 256
+Hash 0  [][][][][][] ... 256
+
+row 1   [][][][][][] ... 256
+hash 1  [][][][][][] ... 256
+
+the unhashed rows will be out private key, and the hashed rows will be out public key
+
+now comes time to sign out message. to do this we will first need to hash it.
+
+message := "Hello"
+hashedmsg := hash(message)
+
+now we have our hashed message, in this example it's going to be sha256.
+
+now we need to look at the individual bits of the hashed message.
+
+say the bits of the hash are 110110 we would need to revial the first block of our private key in row 1
+we will also need to revial the second block of our private key in row 1, but we will revial the third block
+of our private key in row 0
+
+all done it would look like 
+
+row 0       []    [] ... 256
+Hash 0  [][][][][][] ... 256
+
+row 1   [][]  [][]   ... 256
+hash 1  [][][][][][] ... 256
+
+we add all of the revealed blocks from row 0 and 1 together to get a complete 256 block long signature .
+
+to verify our signature we need a few things, firstly, we need to take the signarure's first block and hash it
+then compare that hash to each of our hash rows.
+
+first declare a new message of []byte
+
+this will be where we put the data to test if the order of revealed preimages matches the data 
+of our hashed message
+
+if it matches the 0 row we change nothing 
+
+if it matches the 1 row we add a 1 to the specific spot  
+
+it it matches with neither, say it matched with neither and stop
+
+we repeat this pattern for all 256 blocks until we have a full new message
+
+then we check if the hash of our original message == new messagex
+
+
+
+
