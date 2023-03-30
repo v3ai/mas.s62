@@ -87,8 +87,8 @@ func TestGoodMany(t *testing.T) {
 	}
 }
 
-// TestBadMany tests 1000 signatures, modifying all of them so that they should
-// fail.
+// // TestBadMany tests 1000 signatures, modifying all of them so that they should
+// // fail.
 func TestBadMany(t *testing.T) {
 	for i := 0; i < 1000; i++ {
 		s := fmt.Sprintf("bad %d", i)
@@ -98,10 +98,10 @@ func TestBadMany(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		// sign message
+		// // sign message
 		sig := Sign(msg, sec)
 		sig.Preimage[i%10] = sig.Preimage[i%11].Hash()
-		// verify signature
+		// // verify signature
 		worked := Verify(msg, pub, sig)
 		if worked {
 			t.Fatalf("Verify returned true, expected false")

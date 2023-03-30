@@ -20,9 +20,9 @@
 package main
 
 import (
-	"bytes"
+//	"bytes"
 	"crypto/sha256"
-	"encoding/hex"
+//	"encoding/hex"
 	"fmt"
 	"crypto/rand"
 	"math"
@@ -31,7 +31,7 @@ import (
 func main() {
 
 	// Define your message
-	textString := "1"
+	textString := "Did I pass?? 93710237879"
 	fmt.Printf("%s\n", textString)
 
 	// convert message into a block
@@ -108,34 +108,34 @@ func (self PublicKey) ToHex() string {
 
 // HexToPubkey takes a string from PublicKey.ToHex() and turns it into a pubkey
 // will return an error if there are non hex characters or if the lenght is wrong.
-func HexToPubkey(s string) (PublicKey, error) {
-	var p PublicKey
-
-	expectedLength := 256 * 2 * 64 // 256 blocks long, 2 rows, 64 hex char per block
-
-	// first, make sure hex string is of correct length
-	if len(s) != expectedLength {
-		return p, fmt.Errorf(
-			"Pubkey string %d characters, expect %d", expectedLength)
-	}
-
-	// decode from hex to a byte slice
-	bts, err := hex.DecodeString(s)
-	if err != nil {
-		return p, err
-	}
-	// we already checked the length of the hex string so don't need to re-check
-	buf := bytes.NewBuffer(bts)
-
-	for i, _ := range p.ZeroHash {
-		p.ZeroHash[i] = BlockFromByteSlice(buf.Next(32))
-	}
-	for i, _ := range p.OneHash {
-		p.OneHash[i] = BlockFromByteSlice(buf.Next(32))
-	}
-
-	return p, nil
-}
+// func HexToPubkey(s string) (PublicKey, error) {
+	// var p PublicKey
+// 
+	// expectedLength := 256 * 2 * 64 // 256 blocks long, 2 rows, 64 hex char per block
+// 
+	// // first, make sure hex string is of correct length
+	// if len(s) != expectedLength {
+		// return p, fmt.Errorf(
+			// "Pubkey string %d characters, expect %d", expectedLength)
+	// }
+// 
+	// // decode from hex to a byte slice
+	// bts, err := hex.DecodeString(s)
+	// if err != nil {
+		// return p, err
+	// }
+	// // we already checked the length of the hex string so don't need to re-check
+	// buf := bytes.NewBuffer(bts)
+// 
+	// for i, _ := range p.ZeroHash {
+		// p.ZeroHash[i] = BlockFromByteSlice(buf.Next(32))
+	// }
+	// for i, _ := range p.OneHash {
+		// p.OneHash[i] = BlockFromByteSlice(buf.Next(32))
+	// }
+// 
+	// return p, nil
+// }
 
 // A message to be signed is just a block.
 type Message Block
@@ -185,34 +185,6 @@ func (self Signature) ToHex() string {
 
 	return s
 }
-
-// HexToSignature is the same idea as HexToPubkey, but half as big.  Format is just
-// every block of the signature in sequence.
-func HexToSignature(s string) (Signature, error) {
-	var sig Signature
-
-	expectedLength := 256 * 64 // 256 blocks long, 1 row, 64 hex char per block
-
-	// first, make sure hex string is of correct length
-	if len(s) != expectedLength {
-		return sig, fmt.Errorf(
-			"Pubkey string %d characters, expect %d", expectedLength)
-	}
-
-	// decode from hex to a byte slice
-	bts, err := hex.DecodeString(s)
-	if err != nil {
-		return sig, err
-	}
-	// we already checked the length of the hex string so don't need to re-check
-	buf := bytes.NewBuffer(bts)
-
-	for i, _ := range sig.Preimage {
-		sig.Preimage[i] = BlockFromByteSlice(buf.Next(32))
-	}
-	return sig, nil
-}
-
 // GetMessageFromString returns a Message which is the hash of the given string.
 func GetMessageFromString(s string) Message {
 	return sha256.Sum256([]byte(s))
@@ -292,8 +264,6 @@ func GenerateKey() (SecretKey, PublicKey, error) {
 		pub.OneHash[i] = hash
 	}
 
-
-
 	return sec, pub, nil
 }
 
@@ -335,22 +305,19 @@ func Verify(msg Message, pub PublicKey, sig Signature) bool {
 		} else if sig.Preimage[i].Hash() == pub.OneHash[i] {
 			
 			gsig[int64(math.Floor(float64(i/8)))] = gsig[int64(math.Floor(float64(i)/8.0))] | (1 << (7-(i%8)))
-
 		
 			
-		} 
+		} else if sig.Preimage[i].Hash() != pub.ZeroHash[i] &&  sig.Preimage[i].Hash() != pub.OneHash[i] {
+			return false
+		}
 
 	}
 
 	if msg == gsig {
 		return true 
-	} else {
-		return false
 	}
-
 	
-
-	// Your code here
-	// ===
+	return false
 
 }
+
