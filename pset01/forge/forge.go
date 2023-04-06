@@ -179,25 +179,25 @@ hexSignature4 = "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8b
 	
 		hashedmsgString := GetMessageFromString(fmt.Sprint(msgString,nonce))
 
-
-	for i := 0; i < 256; i++ {
-
-	
-		if sig.Preimage[i].Hash() == pub.ZeroHash[i] {
-			
-		} else if sig.Preimage[i].Hash() == pub.OneHash[i] {
-			
-			gsig[int64(math.Floor(float64(i/8)))] = gsig[int64(math.Floor(float64(i)/8.0))] | (1 << (7-(i%8)))
 		
-			
-		} else if sig.Preimage[i].Hash() != pub.ZeroHash[i] &&  sig.Preimage[i].Hash() != pub.OneHash[i] {
-			return false
+
+		
+		for j := 0; j < 32; j++ {
+// go through each individual bit of each byte from left to right
+			for s := 7; s >= 0; s--{
+			// if the nth bit equals 1 do x
+				if (hashedmsgString[j] & (1 << s) != 0) {
+
+				
+					// if the nth bit equals 0 do y
+				} else {
+				
+				}	
+
+
+
+			}	
 		}
-
-	}
-
-		
-
 		
 		
 
