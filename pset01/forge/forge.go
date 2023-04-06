@@ -103,7 +103,7 @@ type PublicKey struct {
 
 func main() {
 
-	fmt.Println(Forge(3200000, 1))
+	fmt.Println(Forge(4680000, 1))
 
 
 	
@@ -176,13 +176,14 @@ hexSignature4 := "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8
 
 	
 	var sig Signature
+	var emptysig Signature
 
 	// declaration of the nonce
 	nonce := startval
 	hashOfmsg := GetMessageFromString(msgString)
 
 	// function that will continiously check if our
-	
+outer:
 	for Verify(hashOfmsg, pub, sig) == false {
 
 		// get hash of message + nonce 
@@ -192,6 +193,7 @@ hexSignature4 := "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8
 		// go through each block of the hashed message
 
 		currentblock := 0
+
 		for i := 0; i < 32; i++ {
 		// go through each bit of the hashed message
 			for s := 7; s >= 0; s-- {
@@ -205,6 +207,11 @@ hexSignature4 := "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8
 							sig.Preimage[currentblock] = currentsig.Preimage[currentblock]
 						}
 					}
+
+					if sig.Preimage[currentblock] == emptysig.Preimage[currentblock] {
+						nonce++
+						continue outer
+					}
 					
 			
 				} else {
@@ -214,16 +221,24 @@ hexSignature4 := "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8
 							sig.Preimage[currentblock] = currentsig.Preimage[currentblock]
 						}
 					}
+
+					if sig.Preimage[currentblock] == emptysig.Preimage[currentblock] {
+						nonce++
+						continue outer 
+					}					
 					
 				}
 			
 
 				currentblock++
-				fmt.Println("currentblock is: ", currentblock)
+				fmt.Println(currentblock)
 			}
 			
 			
 		}
+
+		
+
 
 		// increment the nonce every time the loop completes
 		nonce++
