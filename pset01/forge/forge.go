@@ -170,45 +170,49 @@ hexSignature4 = "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8b
 	
 	*/
 
+
+
 	
 	var sig Signature
-	
+
+	// declaration of the nonce
 	nonce := 0 
+	hashOfmsg := GetMessageFromString(msgString)
+
+	// function that will continiously check if our
 	
-	for i := 0; i < 1; {
-	
-		hashedmsgString := GetMessageFromString(fmt.Sprint(msgString,nonce))
+	for Verify(hashOfmsg, pub, sig) == false {
 
-		
+		// get hash of message + nonce 
+		hashOfmsg = GetMessageFromString(fmt.Sprint(msgString, nonce))
 
-		
-		for j := 0; j < 32; j++ {
-// go through each individual bit of each byte from left to right
-			for s := 7; s >= 0; s--{
-			// if the nth bit equals 1 do x
-				if (hashedmsgString[j] & (1 << s) != 0) {
+		// go through each block of the hashed message
+		for i := 0; i < 32; i++ {
+		// go through each bit of the hashed message
+			for s := 7; s >= 0; s-- {
 
-				
-					// if the nth bit equals 0 do y
+		// check if bit is a one of a zero
+				if hashOfmsg[i] & (1 << s) != 0 {
+		// check signatures to see if we can sign a 1 on the first block
+					
+			
 				} else {
+					
+				}
+			
+
 				
-				}	
-
-
-
-			}	
+			}
+			
+			
 		}
-		
-		
 
-
+		// increment the nonce every time the loop completes
 		nonce++
+	}
 
-		if <signature is completed> {
-			i++
-		}
-	} 
-
+	
+	
 
 	
 	// your code here!
