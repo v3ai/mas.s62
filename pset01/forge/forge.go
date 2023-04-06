@@ -157,9 +157,60 @@ hexSignature4 = "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8b
 	fmt.Printf("ok 3: %v\n", Verify(msgslice[2], pub, sig3))
 	fmt.Printf("ok 4: %v\n", Verify(msgslice[3], pub, sig4))
 
-	msgString := "my forged message"
-	var sig Signature
+	msgString := "Rhett Applestone rhettapples@gmail.com "
 
+	/*
+	What do we need to do? 
+
+	We need to look at the individual bits one by one of the hash of our message, and see if we have the corospoding
+	preimages for that bit in one of the four signatures.
+
+	if we dont, we need to add a number to our msgString and hash it again and then check. this will be 
+	done with fmt.Sprint(msgString, numberthatincrements 
+	
+	*/
+
+	
+	var sig Signature
+	
+	nonce := 0 
+	
+	for i := 0; i < 1; {
+	
+		hashedmsgString := GetMessageFromString(fmt.Sprint(msgString,nonce))
+
+
+	for i := 0; i < 256; i++ {
+
+	
+		if sig.Preimage[i].Hash() == pub.ZeroHash[i] {
+			
+		} else if sig.Preimage[i].Hash() == pub.OneHash[i] {
+			
+			gsig[int64(math.Floor(float64(i/8)))] = gsig[int64(math.Floor(float64(i)/8.0))] | (1 << (7-(i%8)))
+		
+			
+		} else if sig.Preimage[i].Hash() != pub.ZeroHash[i] &&  sig.Preimage[i].Hash() != pub.OneHash[i] {
+			return false
+		}
+
+	}
+
+		
+
+		
+		
+
+
+		nonce++
+
+		if <signature is completed> {
+			i++
+		}
+	} 
+
+
+	
 	// your code here!
 	// ==
 	// Geordi La
