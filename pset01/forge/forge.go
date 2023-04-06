@@ -187,6 +187,8 @@ hexSignature4 = "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8b
 		hashOfmsg = GetMessageFromString(fmt.Sprint(msgString, nonce))
 
 		// go through each block of the hashed message
+
+		currentblock := 0
 		for i := 0; i < 32; i++ {
 		// go through each bit of the hashed message
 			for s := 7; s >= 0; s-- {
@@ -194,14 +196,26 @@ hexSignature4 = "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8b
 		// check if bit is a one of a zero
 				if hashOfmsg[i] & (1 << s) != 0 {
 		// check signatures to see if we can sign a 1 on the first block
+					for _, currentsig := range sigslice {
+		// if we can sign a 1, put the 1 hash into the signatue
+						if currentsig.Preimage[currentblock].Hash() == pub.OneHash[currentblock] {
+							sig.Preimage[currentblock] = currentsig.Preimage[currentblock]
+						}
+					}
 					
 			
 				} else {
+					for _, currentsig := range sigslice {
+		// if we can sign a 0, put the 0 hash into the signatue
+						if currentsig.Preimage[currentblock].Hash() == pub.ZeroHash[currentblock] {
+							sig.Preimage[currentblock] = currentsig.Preimage[currentblock]
+						}
+					}
 					
 				}
 			
 
-				
+				currentblock++
 			}
 			
 			
@@ -213,13 +227,6 @@ hexSignature4 = "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8b
 
 	
 	
-
-	
-	// your code here!
-	// ==
-	// Geordi La
-	// ==
-
 	return msgString, sig, nil
 
 }
