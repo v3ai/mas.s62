@@ -101,8 +101,10 @@ print the string and print the length of the string
 	for i := 0; i < 256; i++ {
 		if (msgslice[0][i/8]&(1 << (7-(i%8))) == 0 || msgslice[1][i/8]&(1 << (7-(i%8))) == 0 || msgslice[2][i/8]&(1 << (7-(i%8))) == 0 || msgslice[3][i/8]&(1 << (7-(i%8))) == 0) && (msgslice[0][i/8]&(1 << (7-(i%8))) != 0 || msgslice[1][i/8]&(1 << (7-(i%8))) != 0 || msgslice[2][i/8]&(1 << (7-(i%8))) != 0 || msgslice[3][i/8]&(1 << (7-(i%8))) != 0) {
 			str += "A"
+		} else if msgslice[0][i/8]&(1 << (7-(i%8))) == 0 {
+			str += "0"
 		} else {
-			str += "S"
+			str += "1"
 		}
 	}
 

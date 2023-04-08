@@ -176,6 +176,35 @@ hexSignature4 := "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8
 	populate the signature
 
 	this would hopefuly be much faster than checking each individual bit with each signature.
+
+	### New plan
+
+	first, go through msgslice and determine which bits can have anything signed on them, and which need to be either a 1 or a zero.
+
+	By definition the bits that can have anything signed on them dont matter, so we ignore them. 
+
+	We will then create two blocks call them screenBlock and matchBlock. 
+
+	screen block will be bitwise & with each block of our hashed message.
+
+	Screen block will consist of 1s whereever we need a 1 or a 0 (this might not make sense, but I will explain)
+
+	say we have the byte 01101011
+
+	and we need to check that 0 (1) 1 (0) 1 0 (1) 1 the bits with perentesis are a 1 a 0 and anohter 1
+
+	if we bitwise 7 it witth  0  1  0  1  0 0  1  0 we know that if we end up with 
+
+							  0  1  0  0  0 0  1 (this is our match block) that we had 1's in the right position, and because 
+							  
+	our zero bit was & with out one bit, it should be a zero also.
+
+	if we find one of our hashed messages, that when all 32 bytes are bitwise & with our screen and match our match block we
+
+	then know that in sigslice, we have the needed preimages, so we search through each of the four signatures, and compare to 
+
+	the preimage we are trying to match, and if it matches, we put it in our final Signature.
+	
 	
 	*/
 
