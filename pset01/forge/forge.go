@@ -159,7 +159,7 @@ hexSignature4 := "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8
 	fmt.Printf("ok 3: %v\n", Verify(msgslice[2], pub, sig3))
 	fmt.Printf("ok 4: %v\n", Verify(msgslice[3], pub, sig4))
 
-	msgString := "Rhett Applestone rhettapples@gmail.com "
+	msgString := "Forge Rhett Applestone rhettapples@gmail.com "
 
 	/*
 	What do we need to do? 
@@ -180,7 +180,7 @@ hexSignature4 := "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8
 	### New plan
 
 	first, go through msgslice and determine which bits can have anything signed on them, and which need to be either a 1 or a zero.
-
+cle
 	By definition the bits that can have anything signed on them dont matter, so we ignore them. 
 
 	We will then create two blocks call them screenBlock and matchBlock. 
@@ -207,7 +207,58 @@ hexSignature4 := "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8
 	
 	
 	*/
+	var screenBlock Block
+	var matchBlock Block
 
+	// making screenBlock
+
+	for i := 0; i < 256; i++ {
+		if (msgslice[0][i/8]&(1 << (7-(i%8))) == 0 || msgslice[1][i/8]&(1 << (7-(i%8))) == 0 || msgslice[2][i/8]&(1 << (7-(i%8))) == 0 || msgslice[3][i/8]&(1 << (7-(i%8))) == 0) && (msgslice[0][i/8]&(1 << (7-(i%8))) != 0 || msgslice[1][i/8]&(1 << (7-(i%8))) != 0 || msgslice[2][i/8]&(1 << (7-(i%8))) != 0 || msgslice[3][i/8]&(1 << (7-(i%8))) != 0) {
+		
+			// put a 0 in the bit of screenblock (ie do nothing)
+		} else {
+			// put a 1 in the bit of screenblock 
+			screenBlock[i/8] = screenBlock[1/8] | (1 << (7-(i%8)))
+		}
+	}
+
+
+	// making matchBlock
+
+	for i := 0; i < 256; i++ {
+		if (msgslice[0][i/8]&(1 << (7-(i%8))) == 0 || msgslice[1][i/8]&(1 << (7-(i%8))) == 0 || msgslice[2][i/8]&(1 << (7-(i%8))) == 0 || msgslice[3][i/8]&(1 << (7-(i%8))) == 0) && (msgslice[0][i/8]&(1 << (7-(i%8))) != 0 || msgslice[1][i/8]&(1 << (7-(i%8))) != 0 || msgslice[2][i/8]&(1 << (7-(i%8))) != 0 || msgslice[3][i/8]&(1 << (7-(i%8))) != 0) {
+		
+			// put a 0 in the bit of screenblock (ie do nothing)
+		} else if (msgslice[0][i/8]&(1 << (7-(i%8))) != 0 && msgslice[1][i/8]&(1 << (7-(i%8))) != 0 && msgslice[2][i/8]&(1 << (7-(i%8))) != 0 && msgslice[3][i/8]&(1 << (7-(i%8))) != 0) {
+			// put a 1 in the bit of screenblock 
+			matchBlock[i/8] = matchBlock[1/8] | (1 << (7-(i%8)))
+		}
+	}
+	
+
+	// now that we have both screenBlock, and matchBlock, we need to hash our message, then check if the bytes in the hash when & with our scren block, match our match block
+	x := 0 
+	nonce := 0
+	
+outer:
+	for x < 1 {
+		var hashedMsg = GetMessageFromString(fmt.Sprint(msgString, nonce))
+
+		for i := 0; i < 32; i++ {
+			if hashedMsg[i]&screenBlock[i] != matchBlock[i]{
+				fmt.Println(fmt.Sprint(msgString, nonce))
+				nonce++
+				continue outer
+			}
+			
+		}
+	
+	}
+
+
+	
+
+	fmt.Println(fmt.Sprint(msgString, nonce))
 	
 	var sig Signature
 
