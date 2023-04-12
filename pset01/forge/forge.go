@@ -159,7 +159,7 @@ hexSignature4 := "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8
 	fmt.Printf("ok 3: %v\n", Verify(msgslice[2], pub, sig3))
 	fmt.Printf("ok 4: %v\n", Verify(msgslice[3], pub, sig4))
 
-	msgString := "forge Rhett Applestone rhettapples@gmail.com "
+	msgString := "forge Rhett Applestone rhettREDACTED@gmail.com "
 
 	/*
 	What do we need to do? 
@@ -240,7 +240,7 @@ cle
 
 	var sig Signature
 	x := 0 
-	nonce := 0
+	nonce := 3700000000
 	
 	
 outer:
@@ -276,7 +276,7 @@ outer:
 		}
 
 		
-	
+	x++
 	}
 
 
