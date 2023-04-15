@@ -234,7 +234,7 @@ cle
 
 	var sig Signature
 	x := 0 
-	nonce := 1075000000
+	nonce := 5216211569
 		fmt.Printf("%08b\n", screenBlock)
 		fmt.Printf("%08b", matchBlock)
 	
@@ -275,9 +275,6 @@ outer:
 	}
 
 
-	
-
-	fmt.Println(fmt.Sprint(msgString, nonce))
 	
 
 
