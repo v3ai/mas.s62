@@ -103,7 +103,7 @@ type PublicKey struct {
 
 func main() {
 
-	fmt.Println(Forge())
+	Forge()
 
 
 	
@@ -154,11 +154,11 @@ hexSignature4 := "0e49fe1706d9e93b3793e1057f328c4206632da58c13b1aa3c95158c1a68b8
 	msgslice = append(msgslice, GetMessageFromString("3"))
 	msgslice = append(msgslice, GetMessageFromString("4"))
 
-	fmt.Printf("ok 1: %v\n", Verify(msgslice[0], pub, sig1))
+/*	fmt.Printf("ok 1: %v\n", Verify(msgslice[0], pub, sig1))
 	fmt.Printf("ok 2: %v\n", Verify(msgslice[1], pub, sig2))
 	fmt.Printf("ok 3: %v\n", Verify(msgslice[2], pub, sig3))
 	fmt.Printf("ok 4: %v\n", Verify(msgslice[3], pub, sig4))
-
+*/
 	msgString := "forge Rhett Applestone rhettREDACTED@gmail.com :)"
 
 	/*
@@ -235,8 +235,8 @@ cle
 	var sig Signature
 	x := 0 
 	nonce := 5216211569
-		fmt.Printf("%08b\n", screenBlock)
-		fmt.Printf("%08b", matchBlock)
+	//	fmt.Printf("%08b\n", screenBlock)
+	//	fmt.Printf("%08b", matchBlock)
 	
 outer:
 	for x < 1 {
@@ -248,36 +248,12 @@ outer:
 				nonce++
 				continue outer
 			}
-			
+			fmt.Println(i)
 		}
 
-		for i := 0; i < 256; i++ {
-
-			if hashOfmsg[i/8]&(1 << (7-(i/8))) != 0 {
-				for _, currentsig := range sigslice {
-					if currentsig.Preimage[i].Hash() == pub.OneHash[i] {
-						sig.Preimage[i] = currentsig.Preimage[i]
-					}
-				}
-			} else {
-				for _, currentsig := range sigslice {
-					if currentsig.Preimage[i].Hash() == pub.ZeroHash[i] {
-						sig.Preimage[i] = currentsig.Preimage[i]
-					}
-				}
-			}
-
-			
-		}
-
-		
 	x++
 	}
-
-
-	
-
-
+	fmt.Println(pub)
 	
 	
 	return msgString, sig, nil

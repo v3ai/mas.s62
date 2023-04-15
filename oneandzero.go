@@ -96,7 +96,19 @@ else append to a string an "S"
 
 print the string and print the length of the string
 
-*/ 
+*/
+
+	var screenBlock Block
+
+	// making screenBlock
+	for i := 0; i < 256; i++ {
+		if (msgslice[0][i/8]&(1 << (7-(i%8))) == 0 || msgslice[1][i/8]&(1 << (7-(i%8))) == 0 || msgslice[2][i/8]&(1 << (7-(i%8))) == 0 || msgslice[3][i/8]&(1 << (7-(i%8))) == 0) && (msgslice[0][i/8]&(1 << (7-(i%8))) != 0 || msgslice[1][i/8]&(1 << (7-(i%8))) != 0 || msgslice[2][i/8]&(1 << (7-(i%8))) != 0 || msgslice[3][i/8]&(1 << (7-(i%8))) != 0) {
+	
+		} else {
+			screenBlock[i/8] = screenBlock[i/8] | (1 << (7-(i%8))) 
+		} 
+	}
+	 
 	str := ""
 	for i := 0; i < 256; i++ {
 		if (msgslice[0][i/8]&(1 << (7-(i%8))) == 0 || msgslice[1][i/8]&(1 << (7-(i%8))) == 0 || msgslice[2][i/8]&(1 << (7-(i%8))) == 0 || msgslice[3][i/8]&(1 << (7-(i%8))) == 0) && (msgslice[0][i/8]&(1 << (7-(i%8))) != 0 || msgslice[1][i/8]&(1 << (7-(i%8))) != 0 || msgslice[2][i/8]&(1 << (7-(i%8))) != 0 || msgslice[3][i/8]&(1 << (7-(i%8))) != 0) {
@@ -110,10 +122,9 @@ print the string and print the length of the string
 
 	fmt.Println(str)
 	fmt.Println(len(str))
-	fmt.Printf("%08b\n", msgslice[0])
-	fmt.Printf("%08b\n", msgslice[1])
-	fmt.Printf("%08b\n", msgslice[2])
-	fmt.Printf("%08b\n", msgslice[3])
+	fmt.Printf("%08b\n", screenBlock)
+
+
 
 
 }
