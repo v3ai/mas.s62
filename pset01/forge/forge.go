@@ -248,16 +248,36 @@ outer:
 				nonce++
 				continue outer
 			}
-			fmt.Println(i)
 		}
+		
+		msgString = fmt.Sprint(msgString, nonce)
 
-	x++
+
+
+		for i := 0; i < 256; i++ {
+			if hashOfmsg[i/8]&(1 << (7-(i%8))) != 0 {
+				for _, currentSigblock := range sigslice {
+					if currentSigblock.Preimage[i].Hash() == pub.OneHash[i] {
+						sig.Preimage[i] = currentSigblock.Preimage[i]
+					} else {
+						continue
+					}
+				}
+			} else {
+				for _, currentSigblock := range sigslice {
+					if currentSigblock.Preimage[i].Hash() == pub.ZeroHash[i] {
+						sig.Preimage[i] = currentSigblock.Preimage[i]
+					} else {
+						continue
+					}
+				}
+			}
+		}
+		x++
 	}
-	fmt.Println(pub)
 	
 	
 	return msgString, sig, nil
-
 }
 
 // hint:
