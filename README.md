@@ -20,3 +20,6 @@ in your term
 DISCLAIMER
 
 I just started learning go a month ago, so it will not be the best code
+
+
+website: rhettapplestone.com

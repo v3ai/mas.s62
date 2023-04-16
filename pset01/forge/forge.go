@@ -101,13 +101,6 @@ type PublicKey struct {
 
 
 
-func main() {
-
-	Forge()
-
-
-	
-}
 
 func Forge() (string, Signature, error) {
 
